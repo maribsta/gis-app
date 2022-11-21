@@ -29,7 +29,7 @@ export default function Map() {
       map.setFog({}); // Set the default atmosphere style
       map.addSource("location", {
         type: "geojson",
-        data: "https://raw.githubusercontent.com/maribsta/gis-app/main/sample.geojson",
+        data: "https://raw.githubusercontent.com/maribsta/gis-app/main/geojson/phil.geojson",
       });
       map.addLayer({
         id: "location",
