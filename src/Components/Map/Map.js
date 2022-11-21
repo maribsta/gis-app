@@ -25,23 +25,23 @@ export default function Map() {
     map.dragRotate.disable();
     map.touchZoomRotate.disableRotation();
 
-    // map.on("style.load", () => {
-    //   map.setFog({}); // Set the default atmosphere style
-    //   map.addSource("location", {
-    //     type: "geojson",
-    //     data: "file:////./sample.geojson",
-    //   });
-    //   map.addLayer({
-    //     id: "location",
-    //     type: "fill",
-    //     source: "location",
-    //     layout: {},
-    //     paint: {
-    //       "fill-color": "#175cff",
-    //       "fill-opacity": 0.5,
-    //     },
-    //   });
-    // });
+    map.on("style.load", () => {
+      map.setFog({}); // Set the default atmosphere style
+      map.addSource("location", {
+        type: "geojson",
+        data: "https://raw.githubusercontent.com/maribsta/gis-app/main/sample.geojson",
+      });
+      map.addLayer({
+        id: "location",
+        type: "fill",
+        source: "location",
+        layout: {},
+        paint: {
+          "fill-color": "#175cff",
+          "fill-opacity": 0.5,
+        },
+      });
+    });
 
     map.addControl(new mapboxgl.NavigationControl());
 
