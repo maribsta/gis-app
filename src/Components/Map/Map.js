@@ -12,7 +12,7 @@ export default function Map() {
   const map = useRef(null);
   const [lng, setLng] = useState(10.39235);
   const [lat, setLat] = useState(63.430187);
-  const [zoom, setZoom] = useState(12.5);
+  const [zoom, setZoom] = useState(12);
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -25,21 +25,28 @@ export default function Map() {
     map.dragRotate.disable();
     map.touchZoomRotate.disableRotation();
 
-    map.on("style.load", () => {
-      map.setFog({}); // Set the default atmosphere style
-      map.addSource("location", {
-        type: "geojson",
-        data: "https://raw.githubusercontent.com/maribsta/gis-app/main/geojson/phil.geojson",
-      });
-      map.addLayer({
-        id: "location",
-        type: "fill",
-        source: "location",
-        layout: {},
-        paint: {
-          "fill-color": "#175cff",
-          "fill-opacity": 0.5,
-        },
+    const sources = ["midtbyen", "rosenborg"];
+
+    sources.map((s) => {
+      map.on("style.load", () => {
+        map.setFog({}); // Set the default atmosphere style
+        map.addSource(s, {
+          type: "geojson",
+          data:
+            "https://raw.githubusercontent.com/maribsta/gis-app/main/src/static/" +
+            s +
+            ".geojson",
+        });
+        map.addLayer({
+          id: s,
+          type: "fill",
+          source: s,
+          layout: {},
+          paint: {
+            "fill-color": "#175cff",
+            "fill-opacity": 0.5,
+          },
+        });
       });
     });
 
