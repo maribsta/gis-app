@@ -3,16 +3,23 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import * as turf from "@turf/turf";
 import "./Map.css";
+import Tooltip from "../Tooltip";
+import ReactDOM from "react-dom";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoibWFyaWJzdGEiLCJhIjoiY2xhanE5OTJqMDA3NDNzdDR4MXZ6emRiZiJ9.CLZ-Sy7bRF8hHrgaqdimBw";
 
 export default function Map() {
   const mapContainer = useRef(null);
+  const tooltipRef = useRef(new mapboxgl.Popup({ offset: 15 }));
   const map = useRef(null);
   const [lng, setLng] = useState(10.39235);
   const [lat, setLat] = useState(63.430187);
   const [zoom, setZoom] = useState(12);
+  const bounds = [
+    [10.144844, 63.360289], // Southwest coordinates
+    [10.663948, 63.488388], // Northeast coordinates
+  ];
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -20,6 +27,8 @@ export default function Map() {
       style: "mapbox://styles/mapbox/streets-v11",
       center: [lng, lat],
       zoom: zoom,
+      // minZoom: 11,
+      maxBounds: bounds,
     });
 
     map.dragRotate.disable();
@@ -47,8 +56,50 @@ export default function Map() {
             "fill-opacity": 0.5,
           },
         });
+        map.addLayer({
+          id: "test",
+          type: "fill",
+          source: "mapbox-streets",
+          layout: {},
+          paint: {
+            "fill-color": "#175cff",
+            "fill-opacity": 0.5,
+          },
+        });
       });
     });
+
+    // map.addLayer({
+    //   id: "veg",
+    //   type: "fill",
+    //   source: ,
+    //   layout: {},
+    //   paint: {
+    //     "fill-color": "#175cff",
+    //     "fill-opacity": 0.5,
+    //   },
+    // });
+
+    // map.on("mousemove", () => {
+    //   const features = map.queryRenderedFeatures(map);
+    //   const roads = features.filter((i) => (i.sourceLayer = "road"));
+
+    //   console.log(
+    //     roads.map((road) => {
+    //       road.geometry;
+    //     })
+    //   );
+
+    // // Create tooltip node
+    // const tooltipNode = document.createElement("div");
+    // ReactDOM.render(<Tooltip feature={feature} />, tooltipNode);
+
+    // // Set tooltip on map
+    // tooltipRef.current
+    //   .setLngLat(e.lngLat)
+    //   .setDOMContent(tooltipNode)
+    //   .addTo(map);
+    // });
 
     map.addControl(new mapboxgl.NavigationControl());
 
